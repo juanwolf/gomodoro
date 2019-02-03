@@ -1,0 +1,12 @@
+pomodoro_duration = "25m"
+refresh_rate = "1s"
+
+[outputs]
+
+  [outputs.stdout]
+  show_percent = false
+  size = 80 # Size of the progress bar in characters
+  activated = true
+
+  [outputs.file]
+  path = "$HOME/.tomato"
