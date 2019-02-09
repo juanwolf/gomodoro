@@ -19,6 +19,7 @@ steps:
 - name: release
   image: golang:1.11
   commands:
+    - git fetch --tags # Drone does not download tags by default
     - curl -sL https://git.io/goreleaser | bash
   environment:
     GITHUB_TOKEN:
