@@ -1,6 +1,6 @@
 builds:
   - binary: gomodoro
-    main: gomodoro.go
+    main: main.go
     ldflags: -s -w
     goos:
       - windows
