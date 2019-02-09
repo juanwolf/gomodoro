@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/juanwolf/tomato/pkg/config"
-	"github.com/juanwolf/tomato/pkg/outputs"
+	"github.com/juanwolf/gomodoro/pkg/config"
+	"github.com/juanwolf/gomodoro/pkg/outputs"
 
 	"github.com/spf13/cobra"
 )
@@ -31,7 +31,7 @@ func Execute() {
 
 func init() {
 	var configFile string
-	rootCmd.PersistentFlags().StringVar(&configFile, "config", "", "config file (default is $HOME/.config/tomato/config.toml)")
+	rootCmd.PersistentFlags().StringVar(&configFile, "config", "", "config file (default is $HOME/.config/gomodoro/config.toml)")
 	var err error
 	configuration, err = config.ReadConfig(configFile)
 	if err != nil {
@@ -43,4 +43,5 @@ func init() {
 			outputManager.Add(o.Instantiate())
 		}
 	}
+
 }

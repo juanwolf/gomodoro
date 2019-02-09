@@ -19,6 +19,10 @@ func NewStdout(showPercent bool) *Stdout {
 	return &stdout
 }
 
+func (s *Stdout) GetName() string {
+	return "stdout"
+}
+
 func (s *Stdout) Start(pomodoroDuration time.Duration, refreshRate time.Duration) {
 	fmt.Println("Starting pomodoro for", pomodoroDuration)
 	// create bar
@@ -42,7 +46,7 @@ func (s *Stdout) Start(pomodoroDuration time.Duration, refreshRate time.Duration
 	s.bar.Start()
 }
 
-func (s *Stdout) Refresh() {
+func (s *Stdout) Refresh(timeSpent time.Duration) {
 	s.bar.Increment()
 }
 
