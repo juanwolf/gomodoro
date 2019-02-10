@@ -27,9 +27,8 @@ func (s *File) Start(pomodoroDuration time.Duration, refreshRate time.Duration) 
 
 }
 
-func (s *File) Refresh(timeSpent time.Duration) {
-
-	ioutil.WriteFile(s.Path, []byte(formatDuration(timeSpent)), 0644)
+func (s *File) Refresh(timeLeft time.Duration) {
+	ioutil.WriteFile(s.Path, []byte(formatDuration(timeLeft)), 0644)
 }
 
 func (s *File) End() {

@@ -1,7 +1,6 @@
 package outputs
 
 import (
-	"fmt"
 	"gopkg.in/cheggaaa/pb.v1"
 	"time"
 )
@@ -24,7 +23,6 @@ func (s *Stdout) GetName() string {
 }
 
 func (s *Stdout) Start(pomodoroDuration time.Duration, refreshRate time.Duration) {
-	fmt.Println("Starting pomodoro for", pomodoroDuration)
 	// create bar
 	s.bar = pb.New((int(pomodoroDuration.Seconds())))
 	// refresh info every second (default 200ms)
@@ -46,7 +44,7 @@ func (s *Stdout) Start(pomodoroDuration time.Duration, refreshRate time.Duration
 	s.bar.Start()
 }
 
-func (s *Stdout) Refresh(timeSpent time.Duration) {
+func (s *Stdout) Refresh(_timeLeft time.Duration) {
 	s.bar.Increment()
 }
 

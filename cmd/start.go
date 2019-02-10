@@ -1,27 +1,16 @@
 package cmd
 
 import (
-	"github.com/juanwolf/gomodoro/pkg/timer"
 	"github.com/spf13/cobra"
 )
 
-// startCmd represents the start command
 var startCmd = &cobra.Command{
 	Use:   "start",
 	Short: "Start a new pomodoro",
 	Long:  `start a new pomodoro for outputs specified in the config file`,
 	Run: func(cmd *cobra.Command, args []string) {
-		timerChannel, doneChannel := timer.Start(configuration.PomodoroDuration, configuration.RefreshRate)
-		outputManager.Start(configuration.PomodoroDuration, configuration.RefreshRate)
-		for {
-			select {
-			case <-doneChannel:
-				outputManager.End()
-				return
-			case timeElapsed := <-timerChannel:
-				outputManager.Refresh(timeElapsed)
-			}
-		}
+		startTimer(configuration.PomodoroDuration, configuration.RefreshRate)
+
 	},
 }
 

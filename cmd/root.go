@@ -6,8 +6,10 @@ import (
 
 	"github.com/juanwolf/gomodoro/pkg/config"
 	"github.com/juanwolf/gomodoro/pkg/outputs"
+	"github.com/juanwolf/gomodoro/pkg/timer"
 
 	"github.com/spf13/cobra"
+	"time"
 )
 
 var rootCmd = &cobra.Command{
@@ -44,4 +46,20 @@ func init() {
 		}
 	}
 
+}
+
+func startTimer(duration time.Duration, refreshRate time.Duration) {
+	timerChannel, doneChannel := timer.Start(duration, refreshRate)
+	outputManager.Start(duration, refreshRate)
+	for {
+		select {
+		case <-doneChannel:
+			outputManager.End()
+			return
+		case timeElapsed := <-timerChannel:
+
+			timeLeft := duration - timeElapsed
+			outputManager.Refresh(timeLeft)
+		}
+	}
 }
