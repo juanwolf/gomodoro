@@ -1,4 +1,4 @@
-BINARY_NAME="tomato"
+BINARY_NAME="gomodoro"
 
 test:
 	go test ./...
@@ -9,4 +9,4 @@ run:
 	go run main.go
 
 install: build
-	mv tomato /usr/lib/bin/
+	mv gomodoro /usr/lib/bin/
