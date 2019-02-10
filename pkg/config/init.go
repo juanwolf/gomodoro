@@ -15,6 +15,7 @@ const (
 
 type Config struct {
 	PomodoroDuration time.Duration `mapstructure:"pomodoro_duration"`
+	BreakDuration    time.Duration `mapstructure:"break_duration"`
 	RefreshRate      time.Duration `mapstructure:"refresh_rate"`
 	Outputs          OutputsConfig `mapstructure:"outputs"`
 }
@@ -39,6 +40,7 @@ func CopyDefaultConfig() error {
 
 func setDefaults() {
 	viper.SetDefault("pomodoro_duration", 25*time.Minute)
+	viper.SetDefault("break_duration", 5*time.Minute)
 	viper.SetDefault("refresh_rate", 1*time.Second)
 }
 

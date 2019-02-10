@@ -1,4 +1,5 @@
 pomodoro_duration = "25m"
+break_duration = "5m"
 refresh_rate = "1s"
 
 [outputs]
