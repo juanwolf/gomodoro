@@ -27,6 +27,12 @@ refresh_rate = "1s"
   [outputs.file]
   activated = true
   path = "/home/juanwolf/.gomodoro"
+
+  [outputs.slack]
+  activated = false
+  token = ""
+  do_not_disturb = false
+  emoji = ":tomato:"
 ```
 
 ## Outputs available
@@ -35,16 +41,21 @@ refresh_rate = "1s"
 
 Output the state of the pomodoro in the current stdout session with a progress bar. Classic.
 
-2. File
+### File
 
-Output the state of the pomodoro inside a file. Handy when you use tmux or any kind of status hackable status bar.
+Output the state of the pomodoro inside a file. Handy when you use tmux or any kind of hackable status bar.
 
-## Outputs incoming
+### Slack
 
-1. Slack
+Output the state of the pomodoro inside your slack status. An option is available to activate the do not disturb mode.
+You'll need a token with those permissions:
 
-Output the state of the pomodoro inside your slack status. An option will be available to activate the disturb mode.
+```
+users.profile:write
+dnd:write
+```
 
+You can create an app to get a token [here](https://api.slack.com/apps?new_app=1).
 
 ## License
 

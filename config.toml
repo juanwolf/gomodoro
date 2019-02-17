@@ -1,6 +1,6 @@
 pomodoro_duration = "25m"
 break_duration = "5m"
-refresh_rate = "1s"
+refresh_rate = "15s"
 
 [outputs]
 
@@ -12,3 +12,9 @@ refresh_rate = "1s"
   [outputs.file]
   activated = true
   path = "/home/juanwolf/.gomodoro"
+
+  [outputs.slack]
+  activated = false
+  token = ""
+  do_not_disturb = false
+  emoji = ":tomato:"

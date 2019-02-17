@@ -8,6 +8,7 @@ import (
 type OutputsConfig struct {
 	Stdout StdoutConfig `mapstructure:"stdout"`
 	File   FileConfig   `mapstructure:"file"`
+	Slack  SlackConfig  `mapstructure:"slack"`
 }
 
 func DefaultOutputsConfig() OutputsConfig {
@@ -20,10 +21,14 @@ func DefaultOutputsConfig() OutputsConfig {
 		Path:      "$HOME/.gomodoro",
 		Activated: false,
 	}
+	slackConfig := SlackConfig{
+		Activated: false,
+	}
 
 	return OutputsConfig{
 		Stdout: stdoutConfig,
 		File:   fileConfig,
+		Slack:  slackConfig,
 	}
 }
 
@@ -33,7 +38,7 @@ type OutputConfig interface {
 }
 
 func (o OutputsConfig) GetOutputsConfig() []OutputConfig {
-	return []OutputConfig{o.Stdout, o.File}
+	return []OutputConfig{o.Stdout, o.File, o.Slack}
 }
 
 func setOutputsDefaults() {
@@ -88,4 +93,27 @@ func (c FileConfig) Instantiate() *outputs.Output {
 func setFileDefaults() {
 	viper.SetDefault("outputs.file.path", "$HOME/.gomodoro")
 	viper.SetDefault("outputs.file.activated", false)
+}
+
+type SlackConfig struct {
+	Activated    bool   `mapstructure:"activated"`
+	Token        string `mapstructure:"token"`
+	DoNotDisturb bool   `mapstructure:"do_not_disturb"`
+	Emoji        string `mapstructure:"emoji"`
+}
+
+func (c SlackConfig) IsActivated() bool {
+	return c.Activated
+}
+
+func (c SlackConfig) Instantiate() *outputs.Output {
+	slack := outputs.NewSlack(c.Token, c.DoNotDisturb, c.Emoji)
+	output := outputs.Output(slack)
+	return &output
+
+}
+
+func setSlackDefaults() {
+	viper.SetDefault("outputs.slack.activated", false)
+	viper.SetDefault("outputs.slack.emoji", ":tomato:")
 }
