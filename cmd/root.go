@@ -1,8 +1,11 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/juanwolf/gomodoro/pkg/config"
 	"github.com/juanwolf/gomodoro/pkg/outputs"
@@ -23,6 +26,7 @@ var rootCmd = &cobra.Command{
 
 var configuration = &config.Config{}
 var outputManager = outputs.NewOutputManager()
+var cancelContext, cancel = context.WithCancel(context.Background())
 
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
@@ -46,10 +50,20 @@ func init() {
 		}
 	}
 
+	signals := make(chan os.Signal, 1)
+	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM)
+
+	go func() {
+		select {
+		case <-signals:
+			cancel()
+		}
+	}()
+
 }
 
-func startTimer(duration time.Duration, refreshRate time.Duration) {
-	timerChannel, doneChannel := timer.Start(duration, refreshRate)
+func startTimer(duration time.Duration, refreshRate time.Duration, ctx context.Context) {
+	timerChannel, doneChannel := timer.Start(duration, refreshRate, ctx)
 	outputManager.Start(duration, refreshRate)
 	for {
 		select {
@@ -57,7 +71,6 @@ func startTimer(duration time.Duration, refreshRate time.Duration) {
 			outputManager.End()
 			return
 		case timeElapsed := <-timerChannel:
-
 			timeLeft := duration - timeElapsed
 			outputManager.Refresh(timeLeft)
 		}

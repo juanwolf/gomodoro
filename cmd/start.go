@@ -9,8 +9,7 @@ var startCmd = &cobra.Command{
 	Short: "Start a new pomodoro",
 	Long:  `start a new pomodoro for outputs specified in the config file`,
 	Run: func(cmd *cobra.Command, args []string) {
-		startTimer(configuration.PomodoroDuration, configuration.RefreshRate)
-
+		startTimer(configuration.PomodoroDuration, configuration.RefreshRate, cancelContext)
 	},
 }
 

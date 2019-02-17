@@ -9,7 +9,6 @@ type OutputManager struct {
 }
 
 func NewOutputManager() OutputManager {
-
 	return OutputManager{}
 }
 
