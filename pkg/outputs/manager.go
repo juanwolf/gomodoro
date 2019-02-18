@@ -22,9 +22,9 @@ func (o *OutputManager) Refresh(timeSpent time.Duration) {
 	}
 }
 
-func (o *OutputManager) Start(pomodoroDuration time.Duration, refreshRate time.Duration) {
+func (o *OutputManager) Start(pomodoroDuration time.Duration, refreshRate time.Duration, message string) {
 	for _, output := range o.Outputs {
-		(*output).Start(pomodoroDuration, refreshRate)
+		(*output).Start(pomodoroDuration, refreshRate, message)
 	}
 }
 

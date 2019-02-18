@@ -22,9 +22,8 @@ func (s *File) GetName() string {
 	return "file"
 }
 
-func (s *File) Start(pomodoroDuration time.Duration, refreshRate time.Duration) {
+func (s *File) Start(pomodoroDuration time.Duration, refreshRate time.Duration, message string) {
 	ioutil.WriteFile(s.Path, []byte(pomodoroDuration.String()), 0644)
-
 }
 
 func (s *File) Refresh(timeLeft time.Duration) {

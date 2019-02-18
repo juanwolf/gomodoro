@@ -62,9 +62,9 @@ func init() {
 
 }
 
-func startTimer(duration time.Duration, refreshRate time.Duration, ctx context.Context) {
+func startTimer(duration time.Duration, refreshRate time.Duration, message string, ctx context.Context) {
 	timerChannel, doneChannel := timer.Start(duration, refreshRate, ctx)
-	outputManager.Start(duration, refreshRate)
+	outputManager.Start(duration, refreshRate, message)
 	for {
 		select {
 		case <-doneChannel:

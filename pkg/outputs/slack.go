@@ -32,8 +32,8 @@ func (s *Slack) GetName() string {
 	return "slack"
 }
 
-func (s *Slack) Start(pomodoroDuration time.Duration, refreshRate time.Duration) {
-	err := s.client.SetUserCustomStatus("Working...", s.Emoji)
+func (s *Slack) Start(pomodoroDuration time.Duration, refreshRate time.Duration, message string) {
+	err := s.client.SetUserCustomStatus(message, s.Emoji)
 	if err != nil {
 		fmt.Println(err)
 	}

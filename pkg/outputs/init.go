@@ -8,6 +8,6 @@ import (
 type Output interface {
 	GetName() string
 	Refresh(timeLeft time.Duration)
-	Start(pomodoroDuration time.Duration, refreshRate time.Duration)
+	Start(pomodoroDuration time.Duration, refreshRate time.Duration, message string)
 	End()
 }
