@@ -5,12 +5,12 @@ import (
 	"github.com/spf13/viper"
 	"io/ioutil"
 	"os"
+	"os/user"
 	"time"
 )
 
 const (
-	homeConfigFolder = "$HOME/.config/tomato"
-	etcConfigFolder  = "/etc/tomato"
+	homeConfigFolder = ".config/gomodoro"
 )
 
 type Config struct {
@@ -21,7 +21,7 @@ type Config struct {
 }
 
 func CopyDefaultConfig() error {
-	destinationFile := "$HOME/.config/tomato/config.toml"
+	destinationFile := "$HOME/.gomodoro.toml"
 	input, err := ioutil.ReadFile("./config.toml")
 	if err != nil {
 		return err
@@ -45,20 +45,24 @@ func setDefaults() {
 }
 
 func ReadConfig(configPath string) (*Config, error) {
+	usr, err := user.Current()
+	if err != nil {
+		fmt.Println(err)
+	}
+	userConfig := fmt.Sprintf("%s/%s", usr.HomeDir, homeConfigFolder)
 	var config Config
 	viper.SetConfigType("toml")
 	if configPath != "" {
 		viper.SetConfigFile(configPath)
 	} else {
-		viper.SetConfigName("config")         // name of config file (without extension)
-		viper.AddConfigPath(etcConfigFolder)  // path to look for the config file in
-		viper.AddConfigPath(homeConfigFolder) // call multiple times to add many search paths
-
-		viper.AddConfigPath(".") // optionally look for config in the working directory
+		viper.SetConfigName("config")   // name of config file (without extension)
+		viper.AddConfigPath(userConfig) // call multiple times to add many search paths
+		viper.SetConfigName(".gomodoro")
+		viper.AddConfigPath(usr.HomeDir)
 	}
 	// Setting Default values in Viper
 	setDefaults()
-	err := viper.ReadInConfig() // Find and read the config file
+	err = viper.ReadInConfig() // Find and read the config file
 	if err != nil {
 		return nil, err
 	}

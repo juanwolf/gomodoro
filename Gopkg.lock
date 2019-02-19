@@ -45,6 +45,14 @@
   version = "v1.0"
 
 [[projects]]
+  branch = "master"
+  digest = "1:27cf2064012b53814efdfc7a8e2f3cd9146718db13ccbb56043f0103ca84510c"
+  name = "github.com/juanwolf/slack"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "6197a62160013b3ee31f6e02340267bcac9a875c"
+
+[[projects]]
   digest = "1:c568d7727aa262c32bdf8a3f7db83614f7af0ed661474b24588de635c20024c7"
   name = "github.com/magiconair/properties"
   packages = ["."]
@@ -69,12 +77,9 @@
   version = "v1.1.2"
 
 [[projects]]
-  digest = "1:7711bc85fa91b919713feda232ffe0bd4ebb0e8426b9c0de6c6f476e0eb9b7c2"
+  digest = "1:2487a7d6c9623edd9d79edada3a1e5c14b076e540ce0266321827cdd3a4837bd"
   name = "github.com/nlopes/slack"
-  packages = [
-    ".",
-    "slackutilsx",
-  ]
+  packages = ["slackutilsx"]
   pruneopts = "UT"
   revision = "a7deeca7935c178aa865249bab511daf816288ba"
   version = "v0.5.0"
@@ -189,7 +194,7 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
-    "github.com/nlopes/slack",
+    "github.com/juanwolf/slack",
     "github.com/spf13/cobra",
     "github.com/spf13/viper",
     "gopkg.in/cheggaaa/pb.v1",

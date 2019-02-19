@@ -2,7 +2,7 @@ package outputs
 
 import (
 	"fmt"
-	"github.com/nlopes/slack"
+	"github.com/juanwolf/slack"
 	"time"
 )
 
@@ -33,7 +33,8 @@ func (s *Slack) GetName() string {
 }
 
 func (s *Slack) Start(pomodoroDuration time.Duration, refreshRate time.Duration, message string) {
-	err := s.client.SetUserCustomStatus(message, s.Emoji)
+	pomodoroFinished := time.Now().Add(pomodoroDuration)
+	err := s.client.SetUserCustomStatus(message, s.Emoji, pomodoroFinished.Unix())
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -44,14 +45,10 @@ func (s *Slack) Start(pomodoroDuration time.Duration, refreshRate time.Duration,
 }
 
 func (s *Slack) Refresh(timeLeft time.Duration) {
-	err := s.client.SetUserCustomStatus(fmt.Sprintf("Working for %s", formatDuration(timeLeft)), s.Emoji)
-	if err != nil {
-		fmt.Println(err)
-	}
 }
 
 func (s *Slack) End() {
-	s.client.SetUserCustomStatus("", "")
+	s.client.SetUserCustomStatus("", "", 0)
 	if s.DoNotDisturb {
 		s.client.EndSnooze()
 	}
