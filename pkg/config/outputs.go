@@ -6,29 +6,20 @@ import (
 )
 
 type OutputsConfig struct {
-	Stdout StdoutConfig `mapstructure:"stdout"`
-	File   FileConfig   `mapstructure:"file"`
-	Slack  SlackConfig  `mapstructure:"slack"`
+	Stdout *StdoutConfig `mapstructure:"stdout"`
+	File   *FileConfig   `mapstructure:"file"`
+	Slack  *SlackConfig  `mapstructure:"slack"`
 }
 
 func DefaultOutputsConfig() OutputsConfig {
 	stdoutConfig := StdoutConfig{
 		ShowPercent: false,
 		Size:        80,
-		Activated:   true,
 	}
-	fileConfig := FileConfig{
-		Path:      "$HOME/.gomodoro",
-		Activated: false,
-	}
-	slackConfig := SlackConfig{
-		Activated: false,
-	}
-
 	return OutputsConfig{
-		Stdout: stdoutConfig,
-		File:   fileConfig,
-		Slack:  slackConfig,
+		Stdout: &stdoutConfig,
+		File:   nil,
+		Slack:  nil,
 	}
 }
 
@@ -48,11 +39,10 @@ func setOutputsDefaults() {
 type StdoutConfig struct {
 	ShowPercent bool `mapstructure:"show_percent"`
 	Size        int  `mapstructure:"size"`
-	Activated   bool `mapstructure:"activated"`
 }
 
-func (c StdoutConfig) IsActivated() bool {
-	return c.Activated
+func (c *StdoutConfig) IsActivated() bool {
+	return c != nil
 }
 
 func (c StdoutConfig) Instantiate() *outputs.Output {
@@ -73,12 +63,11 @@ func setStdoutDefaults() {
 }
 
 type FileConfig struct {
-	Activated bool   `mapstructure:"activated"`
-	Path      string `mapstructure:"path"`
+	Path string `mapstructure:"path"`
 }
 
-func (c FileConfig) IsActivated() bool {
-	return c.Activated
+func (c *FileConfig) IsActivated() bool {
+	return c != nil
 }
 
 func (c FileConfig) Instantiate() *outputs.Output {
@@ -95,14 +84,13 @@ func setFileDefaults() {
 }
 
 type SlackConfig struct {
-	Activated    bool   `mapstructure:"activated"`
 	Token        string `mapstructure:"token"`
 	DoNotDisturb bool   `mapstructure:"do_not_disturb"`
 	Emoji        string `mapstructure:"emoji"`
 }
 
-func (c SlackConfig) IsActivated() bool {
-	return c.Activated
+func (c *SlackConfig) IsActivated() bool {
+	return c != nil
 }
 
 func (c SlackConfig) Instantiate() *outputs.Output {
@@ -114,4 +102,5 @@ func (c SlackConfig) Instantiate() *outputs.Output {
 func setSlackDefaults() {
 	viper.SetDefault("outputs.slack.activated", false)
 	viper.SetDefault("outputs.slack.emoji", ":tomato:")
+	viper.SetDefault("outputs.slack.do_not_disturb", false)
 }
