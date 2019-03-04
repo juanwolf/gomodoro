@@ -17,9 +17,10 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "gomodoro",
-	Short: "Gomodoro is an integrated pomodoro timer",
-	Long:  `An Integrated timer to be of all distractions possible the time of a pomodoro`,
+	Use:     "gomodoro",
+	Short:   "Gomodoro is an integrated pomodoro timer",
+	Long:    `An Integrated Pomodoro timer to save you from all distractions possible the time of a pomodoro`,
+	Version: "v0.2.0",
 	Run: func(cmd *cobra.Command, args []string) {
 		cmd.Help()
 	},
