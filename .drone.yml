@@ -14,7 +14,7 @@ steps:
   # Make the binary executable
   - chmod +x $GOPATH/bin/dep
   - dep ensure
-  - go test
+  - make test
 
 - name: release
   image: golang:1.11
