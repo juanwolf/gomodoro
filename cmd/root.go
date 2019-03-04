@@ -28,6 +28,7 @@ var rootCmd = &cobra.Command{
 var configuration = &config.Config{}
 var outputManager = outputs.NewOutputManager()
 var cancelContext, cancel = context.WithCancel(context.Background())
+var configFile string
 
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
@@ -37,8 +38,21 @@ func Execute() {
 }
 
 func init() {
-	var configFile string
-	rootCmd.PersistentFlags().StringVar(&configFile, "config", "", "config file (default is $HOME/.config/gomodoro/config.toml)")
+	cobra.OnInitialize(initConfig)
+	rootCmd.PersistentFlags().StringVarP(&configFile, "config", "c", "", "config file (default is $HOME/.gomodoro.toml)")
+
+	signals := make(chan os.Signal, 1)
+	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM)
+
+	go func() {
+		select {
+		case <-signals:
+			cancel()
+		}
+	}()
+}
+
+func initConfig() {
 	var err error
 	configuration, err = config.ReadConfig(configFile)
 	if err != nil {
@@ -50,16 +64,6 @@ func init() {
 			outputManager.Add(o.Instantiate())
 		}
 	}
-
-	signals := make(chan os.Signal, 1)
-	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM)
-
-	go func() {
-		select {
-		case <-signals:
-			cancel()
-		}
-	}()
 }
 
 func startTimer(duration time.Duration, refreshRate time.Duration, lockFile string, message string, ctx context.Context) {
