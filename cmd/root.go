@@ -16,8 +16,8 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "tomato",
-	Short: "Tomato is an integrated pomodoro timer",
+	Use:   "gomodoro",
+	Short: "Gomodoro is an integrated pomodoro timer",
 	Long:  `An Integrated timer to be of all distractions possible the time of a pomodoro`,
 	Run: func(cmd *cobra.Command, args []string) {
 		cmd.Help()
@@ -59,7 +59,6 @@ func init() {
 			cancel()
 		}
 	}()
-
 }
 
 func startTimer(duration time.Duration, refreshRate time.Duration, message string, ctx context.Context) {
