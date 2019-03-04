@@ -8,14 +8,13 @@ lock_file = "/tmp/gomodoro.pid"
   [outputs.stdout]
   show_percent = false
   size = 80 # Size of the progress bar in characters
-  activated = true
 
-  [outputs.file]
-  activated = true
-  path = "/home/juanwolf/.gomodoro"
-
-  [outputs.slack]
-  activated = false
-  token = ""
-  do_not_disturb = false
-  emoji = ":tomato:"
+#  Extra outputs. Uncomment the lines below to get those outputs activated
+#
+#  [outputs.file]
+#  path = "/home/juanwolf/.gomodoro"
+#
+#  [outputs.slack]
+#  token = ""
+#  do_not_disturb = false
+#  emoji = ":tomato:"
