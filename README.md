@@ -57,6 +57,8 @@ dnd:write
 
 You can create an app to get a token [here](https://api.slack.com/apps?new_app=1).
 
+As the Slack output only send one request to the Slack API when you start a pomodoro, you should not experience any rate limiting from the API. As well, even using this output, you could have a really low refresh_rate value.
+
 ## License
 
 MIT
