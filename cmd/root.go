@@ -16,8 +16,6 @@ import (
 	"time"
 )
 
-const LockFile = "/tmp/gomodoro.pid"
-
 var rootCmd = &cobra.Command{
 	Use:   "gomodoro",
 	Short: "Gomodoro is an integrated pomodoro timer",
@@ -64,11 +62,11 @@ func init() {
 	}()
 }
 
-func startTimer(duration time.Duration, refreshRate time.Duration, message string, ctx context.Context) {
+func startTimer(duration time.Duration, refreshRate time.Duration, lockFile string, message string, ctx context.Context) {
 	timerChannel, doneChannel := timer.Start(duration, refreshRate, ctx)
-	err := createLock()
+	err := createLock(lockFile)
 	if err != nil {
-		fmt.Println("Can't create lock file. If no gomodoro is running, feel free to delete", LockFile)
+		fmt.Println("Can't create lock file. If no gomodoro is running, feel free to delete", lockFile)
 		os.Exit(1)
 	}
 	outputManager.Start(duration, refreshRate, message)
@@ -76,7 +74,7 @@ func startTimer(duration time.Duration, refreshRate time.Duration, message strin
 		select {
 		case <-doneChannel:
 			outputManager.End()
-			deleteLock()
+			deleteLock(lockFile)
 			return
 		case timeElapsed := <-timerChannel:
 			timeLeft := duration - timeElapsed
@@ -85,8 +83,8 @@ func startTimer(duration time.Duration, refreshRate time.Duration, message strin
 	}
 }
 
-func createLock() error {
-	file, err := os.OpenFile(LockFile, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0644)
+func createLock(lockFile string) error {
+	file, err := os.OpenFile(lockFile, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0644)
 	defer file.Close()
 	if err != nil {
 		return err
@@ -96,18 +94,18 @@ func createLock() error {
 	return err
 }
 
-func deleteLock() error {
-	_, err := os.Stat(LockFile)
+func deleteLock(lockFile string) error {
+	_, err := os.Stat(lockFile)
 	if err != nil {
 		return err
 	}
-	err = os.Remove(LockFile)
+	err = os.Remove(lockFile)
 	return err
 }
 
 // As the lock contains the PID, readLock return the PID of the main process
-func readLock() (int, error) {
-	file, err := os.Open(LockFile)
+func readLock(lockFile string) (int, error) {
+	file, err := os.Open(lockFile)
 	defer file.Close()
 	if err != nil {
 		return 0, err
