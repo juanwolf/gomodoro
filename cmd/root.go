@@ -12,8 +12,11 @@ import (
 	"github.com/juanwolf/gomodoro/pkg/timer"
 
 	"github.com/spf13/cobra"
+	"strconv"
 	"time"
 )
+
+const LockFile = "/tmp/gomodoro.pid"
 
 var rootCmd = &cobra.Command{
 	Use:   "gomodoro",
@@ -63,15 +66,62 @@ func init() {
 
 func startTimer(duration time.Duration, refreshRate time.Duration, message string, ctx context.Context) {
 	timerChannel, doneChannel := timer.Start(duration, refreshRate, ctx)
+	err := createLock()
+	if err != nil {
+		fmt.Println("Can't create lock file. If no gomodoro is running, feel free to delete", LockFile)
+		os.Exit(1)
+	}
 	outputManager.Start(duration, refreshRate, message)
 	for {
 		select {
 		case <-doneChannel:
 			outputManager.End()
+			deleteLock()
 			return
 		case timeElapsed := <-timerChannel:
 			timeLeft := duration - timeElapsed
 			outputManager.Refresh(timeLeft)
 		}
 	}
+}
+
+func createLock() error {
+	file, err := os.OpenFile(LockFile, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0644)
+	defer file.Close()
+	if err != nil {
+		return err
+	}
+	pid := os.Getpid()
+	_, err = fmt.Fprintf(file, "%d", pid)
+	return err
+}
+
+func deleteLock() error {
+	_, err := os.Stat(LockFile)
+	if err != nil {
+		return err
+	}
+	err = os.Remove(LockFile)
+	return err
+}
+
+// As the lock contains the PID, readLock return the PID of the main process
+func readLock() (int, error) {
+	file, err := os.Open(LockFile)
+	defer file.Close()
+	if err != nil {
+		return 0, err
+	}
+
+	fileStat, err := file.Stat()
+	if err != nil {
+		return 0, err
+	}
+
+	pid := make([]byte, fileStat.Size())
+	_, err = file.Read(pid)
+	if err != nil {
+		return 0, err
+	}
+	return strconv.Atoi(string(pid))
 }

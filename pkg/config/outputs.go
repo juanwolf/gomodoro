@@ -87,7 +87,6 @@ func (c FileConfig) Instantiate() *outputs.Output {
 	}
 	output := outputs.Output(&file)
 	return &output
-
 }
 
 func setFileDefaults() {
@@ -110,7 +109,6 @@ func (c SlackConfig) Instantiate() *outputs.Output {
 	slack := outputs.NewSlack(c.Token, c.DoNotDisturb, c.Emoji)
 	output := outputs.Output(slack)
 	return &output
-
 }
 
 func setSlackDefaults() {
