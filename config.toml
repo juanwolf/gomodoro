@@ -1,6 +1,7 @@
 pomodoro_duration = "25m"
 break_duration = "5m"
-refresh_rate = "15s"
+refresh_rate = "1s"
+lock_file = "/tmp/gomodoro.pid"
 
 [outputs]
 

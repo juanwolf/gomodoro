@@ -9,7 +9,7 @@ var breakCmd = &cobra.Command{
 	Short: "Start a new break",
 	Long:  `start a new break`,
 	Run: func(cmd *cobra.Command, args []string) {
-		startTimer(configuration.BreakDuration, configuration.RefreshRate, "", cancelContext)
+		startTimer(configuration.BreakDuration, configuration.RefreshRate, configuration.LockFile, "", cancelContext)
 	},
 }
 

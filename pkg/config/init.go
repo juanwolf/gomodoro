@@ -11,12 +11,14 @@ import (
 
 const (
 	homeConfigFolder = ".config/gomodoro"
+	defaultLockFile  = "/tmp/gomodoro.pid"
 )
 
 type Config struct {
 	PomodoroDuration time.Duration `mapstructure:"pomodoro_duration"`
 	BreakDuration    time.Duration `mapstructure:"break_duration"`
 	RefreshRate      time.Duration `mapstructure:"refresh_rate"`
+	LockFile         string        `mapstructure:"lock_file"`
 	Outputs          OutputsConfig `mapstructure:"outputs"`
 }
 
@@ -42,6 +44,7 @@ func setDefaults() {
 	viper.SetDefault("pomodoro_duration", 25*time.Minute)
 	viper.SetDefault("break_duration", 5*time.Minute)
 	viper.SetDefault("refresh_rate", 1*time.Second)
+	viper.SetDefault("lock_file", defaultLockFile)
 }
 
 func ReadConfig(configPath string) (*Config, error) {
