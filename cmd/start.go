@@ -11,6 +11,14 @@ var startCmd = &cobra.Command{
 	Short: "Start a new pomodoro",
 	Long:  `start a new pomodoro for outputs specified in the config file`,
 	Run: func(cmd *cobra.Command, args []string) {
+		err := storeManager.Init()
+		if err != nil {
+			panic(err)
+		}
+		err = storeManager.CreatePomodoro(message)
+		if err != nil {
+			panic(err)
+		}
 		startTimer(configuration.PomodoroDuration, configuration.RefreshRate, configuration.LockFile, message, cancelContext)
 	},
 }

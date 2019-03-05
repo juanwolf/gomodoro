@@ -20,6 +20,7 @@ type Config struct {
 	RefreshRate      time.Duration `mapstructure:"refresh_rate"`
 	LockFile         string        `mapstructure:"lock_file"`
 	Outputs          OutputsConfig `mapstructure:"outputs"`
+	Stores           StoresConfig  `mapstructure:"stores"`
 }
 
 func CopyDefaultConfig() error {

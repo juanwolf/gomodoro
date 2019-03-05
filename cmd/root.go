@@ -9,6 +9,7 @@ import (
 
 	"github.com/juanwolf/gomodoro/pkg/config"
 	"github.com/juanwolf/gomodoro/pkg/outputs"
+	"github.com/juanwolf/gomodoro/pkg/stores"
 	"github.com/juanwolf/gomodoro/pkg/timer"
 
 	"github.com/spf13/cobra"
@@ -28,6 +29,7 @@ var rootCmd = &cobra.Command{
 
 var configuration = &config.Config{}
 var outputManager = outputs.NewOutputManager()
+var storeManager = stores.NewStoreManager()
 var cancelContext, cancel = context.WithCancel(context.Background())
 var configFile string
 
@@ -63,6 +65,12 @@ func initConfig() {
 	for _, o := range configuration.Outputs.GetOutputsConfig() {
 		if o.IsActivated() {
 			outputManager.Add(o.Instantiate())
+		}
+	}
+
+	for _, c := range configuration.Stores.GetStoresConfig() {
+		if c.IsActivated() {
+			storeManager.Add(c.Instantiate())
 		}
 	}
 }
