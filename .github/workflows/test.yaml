@@ -1,10 +1,10 @@
-name: Go package
+name: Go
 
 on:
   - push
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
