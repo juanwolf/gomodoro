@@ -2,7 +2,7 @@ package outputs
 
 import (
 	"fmt"
-	"github.com/juanwolf/slack"
+	"github.com/slack-go/slack"
 	"time"
 )
 
